@@ -1,0 +1,31 @@
+{
+  "name": "ecc-superagent",
+  "version": "0.1.0",
+  "description": "Extended version of Superagent.js to use within eLDS framework",
+  "main": "es5/component.js",
+  "es5": "es5/component.js",
+  "es6": "index.js",
+  "scripts": {
+    "test": "gulp test",
+    "cover": "gulp cover",
+    "init": "node common-files/install.js",
+    "build": "gulp",
+    "prepublish": "git submodule init && git submodule update && npm run init && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.eccenca.com/elds-ui/ecc-superagent.git"
+  },
+  "author": "Tim Ermilov <tim.ermilov@eccenca.com>",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "ecc-gulp-tasks": "^0.8.0",
+    "ecc-test-helpers": "^0.1.11",
+    "gulp": "^3.9.0",
+    "nock": "^2.7.0"
+  },
+  "dependencies": {
+    "superagent": "^1.2.0",
+    "superagent-rx": "^0.1.0"
+  }
+}
