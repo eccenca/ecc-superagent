@@ -4,7 +4,7 @@ Extended version of Superagent.js to use within eLDS framework
 
 ## Usage
 
-Includes Superagent.js and Superagent-rx packages.
+Includes [Superagent.js](https://github.com/visionmedia/superagent) and [Superagent-rx](https://github.com/yamalight/superagent-rx) packages.
 So, all you need to use it is import and call with your ajax requests:
 
 ```js
