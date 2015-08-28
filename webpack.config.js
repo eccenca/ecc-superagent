@@ -1,3 +1,4 @@
+/* eslint no-var: 0 */
 var path = require('path');
 var fs = require('fs');
 
@@ -10,6 +11,7 @@ fs.readdirSync('node_modules')
 });
 
 module.exports = {
+    devtool: 'inline-source-map',
     context: path.resolve(__dirname),
     entry: './index.js',
     output: {
