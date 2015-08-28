@@ -11,7 +11,6 @@ fs.readdirSync('node_modules')
 });
 
 module.exports = {
-    devtool: 'inline-source-map',
     context: path.resolve(__dirname),
     entry: './index.js',
     output: {
