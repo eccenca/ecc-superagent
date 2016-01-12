@@ -19,8 +19,8 @@
   "author": "Tim Ermilov <tim.ermilov@eccenca.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "ecc-gulp-tasks": "^0.14.0",
-    "ecc-test-helpers": "^0.1.11",
+    "ecc-gulp-tasks": "^0.16.11",
+    "ecc-test-helpers": "^0.2.1",
     "gulp": "^3.9.0",
     "nock": "^2.7.0"
   },
