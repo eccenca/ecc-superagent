@@ -1,6 +1,6 @@
 {
   "name": "ecc-superagent",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Extended version of Superagent.js to use within eLDS framework",
   "main": "es5/component.js",
   "es5": "es5/component.js",
