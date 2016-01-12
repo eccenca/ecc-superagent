@@ -1,4 +1,36 @@
+#START
+# PLEASE PLACE CUSTOM NPM IGNORES BELOW #END
+#
+# ANYTHING YOU PLACE BEFORE THE END TAG
+# WILL BE OVERWRITTEN BY OUR COMMON-FILES
+# INSTALL-SCRIPT
+
+# ignore node_modules and debug log
 node_modules/
-coverage/
+npm-debug.log
+
+# ignore git
+.git/
+.gitignore
+
+# ignore submodule files
 common-files/
+.gitmodules
+
+# ignore tests
+ui-test/
 test/
+
+# ignore coverage report
+coverage/
+
+# ignore symlinks
+.babelrc
+.editorconfig
+.eslintrc.yml
+Makefile
+
+# ignore data folders by jetbrains products
+.idea/
+
+#END
