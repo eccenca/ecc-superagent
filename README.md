@@ -1,4 +1,4 @@
-# Eccenca extended Superagent lib
+# Eccenca extended Superagent lib (ecc-superagent)
 
 Extended version of Superagent.js to use within eLDS framework
 
