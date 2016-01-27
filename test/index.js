@@ -10,7 +10,7 @@ nock('http://test.com').get('/').reply(200, 'OK');
 import request from '../index.js';
 
 // main test suite
-describe('ReSPARQLer', () => {
+describe('SuperAgent', () => {
     it('should exist', () => {
         // check object
         should.exist(request);
