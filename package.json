@@ -19,13 +19,13 @@
   "author": "Tim Ermilov <tim.ermilov@eccenca.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "ecc-gulp-tasks": "^0.16.11",
-    "ecc-test-helpers": "^0.2.1",
+    "ecc-gulp-tasks": "^1.1.0",
+    "ecc-test-helpers": "^1.0.0",
     "gulp": "^3.9.0",
-    "nock": "^2.7.0"
+    "nock": "^7.0.1"
   },
   "dependencies": {
-    "superagent": "^1.2.0",
+    "superagent": "^1.7.2",
     "superagent-rx": "^0.2.0"
   }
 }
