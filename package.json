@@ -25,7 +25,7 @@
     "nock": "^7.0.1"
   },
   "dependencies": {
-    "superagent": "^1.7.2",
+    "superagent": "~1.7.2",
     "superagent-rx": "^0.2.0"
   }
 }
