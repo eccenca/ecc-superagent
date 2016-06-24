@@ -16,7 +16,7 @@
     "type": "git",
     "url": "https://gitlab.eccenca.com/elds-ui/ecc-superagent.git"
   },
-  "author": "Tim Ermilov <tim.ermilov@eccenca.com>",
+  "author": "eccenca GmbH <opensource@eccenca.com> (http://eccenca.com)",
   "license": "GPL-3.0",
   "devDependencies": {
     "ecc-dotfiles": "^1.4.1",
