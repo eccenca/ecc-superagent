@@ -27,6 +27,6 @@
   },
   "dependencies": {
     "superagent": "~1.7.2",
-    "superagent-rx": "^0.2.0"
+    "superagent-rx": "^0.3.0"
   }
 }
