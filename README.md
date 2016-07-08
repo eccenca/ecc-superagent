@@ -27,7 +27,7 @@ For Example:
 import request from 'ecc-superagent';
 
 // Register a plugin which sets a header on each request
-request.use('setHeaderPlugin', (request) => {
+request.useForEachRequest('setHeaderPlugin', (request) => {
     request.set('X-Example-Header', 'FOO');
     return request;
 });
@@ -41,6 +41,6 @@ request
     });
 
 // Disable the plugin
-request.use('setHeaderPlugin', false);
+request.useForEachRequest('setHeaderPlugin', false);
 
 ```
