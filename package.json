@@ -20,7 +20,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "ecc-dotfiles": "^1.4.1",
-    "ecc-gulp-tasks": "^2.3.0",
+    "ecc-gulp-tasks": "^3.0.0-alpha",
     "ecc-test-helpers": "^15.0.0",
     "gulp": "^3.9.0",
     "nock": "^8.0.0"
