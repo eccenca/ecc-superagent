@@ -4,9 +4,10 @@ import should from 'ecc-test-helpers';
 
 // nock
 import nock from 'nock';
-nock('http://test.com').get('/').reply(200, 'OK');
+nock('http://test.com').get('/').twice().reply(200, 'OK');
 nock('http://test2.com').get('/').reply(200, 'OK');
 nock('http://test3.com').get('/').reply(200, 'OK');
+nock('http://foobar.com').get('/').reply(403, 'NOPE');
 
 // import module
 import request from '../index.js';
@@ -18,11 +19,21 @@ describe('SuperAgent', () => {
         should.exist(request);
     });
 
-    it('should get page', (done) => {
+    it('should get page as an observable', (done) => {
         request
             .get('http://test.com')
             .observe() // this returns Rx.Observable
             .subscribe(function(res) {
+                should(res.text).equal('OK');
+                done();
+            });
+    });
+
+    it('should get page with .end()', (done) => {
+        request
+            .get('http://test.com')
+            .end(function(err, res) {
+                should(err).equal(null);
                 should(res.text).equal('OK');
                 done();
             });
