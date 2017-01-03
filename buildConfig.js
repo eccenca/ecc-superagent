@@ -11,9 +11,6 @@ module.exports = {
                 filename: 'component.js',
                 libraryTarget: 'commonjs2',
             },
-            resolve: {
-                root: path.resolve(__dirname),
-            },
         },
     },
 };
