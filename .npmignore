@@ -8,10 +8,13 @@
 # ignore node_modules and debug log
 node_modules/
 npm-debug.log
+yarn-error.log
+yarn.lock
 
 # ignore git
 .git/
 .gitignore
+.gitlab
 
 # ignore submodule files
 common-files/
@@ -35,5 +38,8 @@ gulpfile.js
 
 # ignore data folders by jetbrains products
 .idea/
+
+# ignore compiled
+.tmp/
 
 #END
