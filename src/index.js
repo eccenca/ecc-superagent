@@ -7,7 +7,11 @@ import superagentGlobalPlugin from './superagent-global-plugin';
 
 import superagentHeadersFix from './superagent-headers-fix';
 
+import superagentHTTPProblems from './superagent-http-problem';
+
 superagentHeadersFix(superagent);
+
+superagentHTTPProblems(superagent);
 
 superagentRx(superagent);
 
