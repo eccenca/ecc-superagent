@@ -27,14 +27,10 @@ describe('httpProblem', () => {
                     deadline: 20,
                 })
                 .end(function(err, res) {
-
-                    const title = 'An Timeout error occurred';
-
                     should(err).is.a.Error();
-                    should(err.title).equal(title);
-                    should(err.httpProblem).equal(true);
-                    should(err.message).equal('Test\nTest Detail');
-                    should(err.response.type).equal('application/json');
+                    should(err.title).equal("A timeout error occurred");
+                    should(err.message).equal(err.title+"\n"+err.detail);
+                    should(err.response.type).equal('application/problem+json');
                     done();
                 })
 
@@ -57,11 +53,10 @@ describe('httpProblem', () => {
                 .end(function(err, res) {
                     should(err).is.a.Error();
                     should(err.statusCode).equal(errorcode);
-                    should(err.httpProblem).equal(true);
                     should(err.title).equal('Test');
                     should(err.detail).equal('Test Detail');
                     should(err.message).equal('Test\nTest Detail');
-                    should(err.response.type).equal('application/json');
+                    should(err.response.type).equal('application/problem+json');
                     done();
                 });
         });
@@ -84,11 +79,10 @@ describe('httpProblem', () => {
 
                     should(err).is.a.Error();
                     should(err.statusCode).equal(errorcode);
-                    should(err.httpProblem).equal(true);
                     should(err.title).equal('Test');
                     should(err.detail).equal('Test Detail');
                     should(err.message).equal('Test\nTest Detail');
-                    should(err.response.type).equal('application/json');
+                    should(err.response.type).equal('application/problem+json');
                     done();
                 });
         });
