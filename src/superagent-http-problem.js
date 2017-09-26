@@ -1,10 +1,54 @@
+import _ from 'lodash';
+
 function httpProblemHandler(callback, err, res) {
 
-    // DO something with err/res here :)
-    console.warn('foobar');
-    // TODO: Please do not forget that if .message is accessed,
-    // it should log an deprecation warning if __DEBUG__ is on
-    console.warn(__DEBUG__);
+    // Adapt new errors (problem+json) to the old format and inform the user about deprecation.
+    if (err) {
+
+        if (_.has(err, 'response.type') && err.response.type === 'application/problem+json') {
+
+            const message = {
+                get: function(t, n) {
+                    if (n === 'message') {
+                        if (__DEBUG__) {
+                            console.warn("The usage of message is DEPRECATED. Please use title / detail / cause");
+                        }
+                        return err.response.body.title+'\n'+err.response.body.detail;
+                    }
+                    else {
+                        return t[n];
+                    }
+                }
+            };
+            err = new Proxy(err, message);
+            err.title = err.response.body.title;
+            err.detail = err.response.body.detail;
+            err.statusCode = _.get(err, 'response.statusCode', undefined);
+    }
+    // Convert connection aborted to a new format problem+json
+    else if (err.code === 'ECONNABORTED') {
+        // TODO: look at the repository and add more codes (CORS, conn refused ...)
+        const m = err.message;
+        err.title = 'A timeout error occurred';
+        err.detail = err.message;
+        const message = {
+            get: function(t, n) {
+                if (n === 'message') {
+                    if (__DEBUG__) {
+                        console.warn("The usage of message is DEPRECATED. Please use title / detail / cause");
+                    }
+                    return 'A timeout error occurred'+'\n'+m;
+                }
+                else {
+                    return t[n];
+                }
+            }
+        };
+        err = new Proxy(err, message);
+        _.set(err, 'response.type', 'application/problem+json');
+    }
+
+}
 
     callback(err, res);
 }
