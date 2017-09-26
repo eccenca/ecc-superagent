@@ -34,26 +34,10 @@ module.exports = function(superagent) {
 
     const oldEnd = superagent.Request.prototype.end;
 
-    // superagent.Request.prototype.observe = function() {
-    //     var self = this;
-    //     // wrap into observable and return
-    //     return Rx.Observable.create(function(observable) {
-    //         self.end(function(err, res){
-    //             if(err){
-    //                 observable.onError(err);
-    //             } else {
-    //                 observable.onNext(res);
-    //             }
-    //             observable.onCompleted();
-    //         });
-    //     });
-    // };
-
     superagent.Request.prototype.end = function(callback) {
         const oldCallback = callback;
 
         oldEnd.apply(this, [fixHeaders.bind(this, oldCallback)]);
-
 
     };
 
