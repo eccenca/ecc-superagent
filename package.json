@@ -1,7 +1,7 @@
 {
-  "name": "ecc-superagent",
+  "name": "@eccenca/superagent",
   "version": "1.2.0",
-  "description": "Extended version of Superagent.js to use within eLDS framework",
+  "description": "Extended version of superagent.js, pimped with RX, better Link header parsing and HTTP Problem support",
   "main": "es5/component.js",
   "es5": "es5/component.js",
   "es6": "index.js",
@@ -10,14 +10,14 @@
     "cover": "gulp cover",
     "init": "ecc-link-dotfiles",
     "build": "gulp",
-    "prepublish": "npm run init && npm run build"
+    "prepare": "npm run init && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "https://gitlab.eccenca.com/elds-ui/ecc-superagent.git"
   },
   "author": "eccenca GmbH <opensource@eccenca.com> (http://eccenca.com)",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "devDependencies": {
     "ecc-dotfiles": "^2.1.0",
     "ecc-gulp-tasks": "^3.7.0",
