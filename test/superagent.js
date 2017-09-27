@@ -44,37 +44,6 @@ describe('SuperAgent', () => {
 
     });
 
-    describe('should get requests with errors correctly', () => {
-
-        nock('http://test.com').get('/').twice().reply(415, 'FAIL');
-
-
-        it('should get page as an observable', (done) => {
-            request
-                .get('http://test.com')
-                .observe() // this returns Rx.Observable
-                .subscribe(_.noop, function(err){
-
-                    should(err).is.a.Error();
-
-                    should(err.response.text).equal('FAIL');
-
-                    done();
-                });
-        });
-
-        it('should get page with .end()', (done) => {
-            request
-                .get('http://test.com')
-                .end(function(err, res) {
-                    should(err).is.a.Error();
-                    should(res.text).equal('FAIL');
-                    done();
-                });
-        });
-
-    });
-
     describe('Global Plugin Extension', () => {
 
         it('should exist', () => {
