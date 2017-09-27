@@ -35,10 +35,7 @@ module.exports = function(superagent) {
     const oldEnd = superagent.Request.prototype.end;
 
     superagent.Request.prototype.end = function(callback) {
-        const oldCallback = callback;
-
-        oldEnd.apply(this, [fixHeaders.bind(this, oldCallback)]);
-
+        oldEnd.apply(this, [fixHeaders.bind(this, callback)]);
     };
 
     return superagent;
