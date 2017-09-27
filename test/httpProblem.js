@@ -23,7 +23,7 @@ describe('httpProblem', () => {
                 .subscribe(_.noop, function(err){
 
                     should(err).is.a.Error();
-
+                    should(err.isHTTPProblem).equal(true);
                     should(err.response.text).equal('FAIL');
 
                     done();
@@ -35,7 +35,9 @@ describe('httpProblem', () => {
                 .get('http://test.com')
                 .end(function(err, res) {
                     should(err).is.a.Error();
+                    should(err.isHTTPProblem).equal(true);
                     should(res.text).equal('FAIL');
+                    should(err.response.text).equal('FAIL');
                     done();
                 });
         });

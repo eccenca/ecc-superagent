@@ -9,23 +9,22 @@ function httpProblemHandler(callback, err, res) {
     // Adapt new errors (problem+json) to the old format and inform the user about deprecation.
     if (err) {
 
+        let detail = err.message;
+        let title = 'An Error occurred';
+
+        err.statusCode = _.get(err, 'response.statusCode', undefined);
+
         // Yay, we got a nice HTTP Problem error here
         if (_.get(err, 'response.type') === 'application/problem+json') {
 
-            err.title = err.response.body.title;
-            err.detail = err.response.body.detail;
-            err.statusCode = _.get(err, 'response.statusCode', undefined);
+            title = _.get(err, 'response.body.title', title);
+            detail = _.get(err, 'response.body.detail', detail);
         }
         //We try to fit all non-http errors in the HTTP error scheme
         else {
 
-            let detail = err.message;
-            let title = 'An Error occurred';
-
             const responseText = _.get(err, 'response.text', '');
             const responseMessage = _.get(err, 'response.body.message', '');
-
-            err.statusCode = _.get(err, 'response.statusCode', undefined);
 
             // TODO: Which errors are also handled by superagent ? -> https://github.com/visionmedia/superagent
             // Handle Superagent Timeout Errors
@@ -45,10 +44,11 @@ function httpProblemHandler(callback, err, res) {
                 detail = 'HTTP Error: ' + detail;
             }
 
-            err.title = title;
-            err.detail = detail;
-            err.message = title + '\n' + detail;
         }
+
+        err.title = title;
+        err.detail = detail;
+        err.isHTTPProblem = true;
 
         _.set(err, 'response.type', 'application/problem+json');
 
