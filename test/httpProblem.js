@@ -87,6 +87,31 @@ describe('httpProblem', () => {
                 });
         });
 
+        it('on old errors', (done) => {
+
+            const errorcode = _.random(400, 410);
+            nock('http://test.com')
+                .get('/')
+                .reply(
+                    errorcode,
+                    'Something went wrong'//,
+                    //{'Content-Type': 'application/json'}
+                );
+
+
+            request.get('http://test.com')
+                .end(function(err, res) {
+
+                    should(err).is.a.Error();
+                    should(err.statusCode).equal(errorcode);
+                    should(err.title).equal('DEPRECATED old format response');
+                    should(err.detail).equal('Something went wrong');
+                    should(err.message).equal('DEPRECATED old format response\nSomething went wrong');
+                    should(err.response.type).equal('application/problem+json');
+                    done();
+                });
+        });
+
 
     })
 
