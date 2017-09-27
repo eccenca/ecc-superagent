@@ -11,7 +11,7 @@ function httpProblemHandler(callback, err, res) {
                 get: function(t, n) {
                     if (n === 'message') {
                         if (__DEBUG__) {
-                            console.warn("The usage of message is DEPRECATED. Please use title / detail / cause");
+                            console.warn("The usage of message is DEPRECATED. The response is in the new HTTP Problem format. Please use title / detail / cause");
                         }
                         return err.response.body.title+'\n'+err.response.body.detail;
                     }
@@ -24,31 +24,53 @@ function httpProblemHandler(callback, err, res) {
             err.title = err.response.body.title;
             err.detail = err.response.body.detail;
             err.statusCode = _.get(err, 'response.statusCode', undefined);
-    }
-    // Convert connection aborted to a new format problem+json
-    else if (err.code === 'ECONNABORTED') {
-        // TODO: look at the repository and add more codes (CORS, conn refused ...)
-        const m = err.message;
-        err.title = 'A timeout error occurred';
-        err.detail = err.message;
-        const message = {
-            get: function(t, n) {
-                if (n === 'message') {
-                    if (__DEBUG__) {
-                        console.warn("The usage of message is DEPRECATED. Please use title / detail / cause");
+        }
+        // Convert connection aborted to a new format problem+json
+        else if (err.code === 'ECONNABORTED') {
+            // TODO: look at the repository and add more codes (CORS, conn refused ...)
+            const m = err.message;
+            err.title = 'A timeout error occurred';
+            err.detail = err.message;
+            const message = {
+                get: function(t, n) {
+                    if (n === 'message') {
+                        if (__DEBUG__) {
+                            console.warn("The usage of message is DEPRECATED. Please use title / detail / cause");
+                        }
+                        return 'A timeout error occurred'+'\n'+m;
                     }
-                    return 'A timeout error occurred'+'\n'+m;
+                    else {
+                        return t[n];
+                    }
                 }
-                else {
-                    return t[n];
-                }
-            }
-        };
-        err = new Proxy(err, message);
-        _.set(err, 'response.type', 'application/problem+json');
-    }
+            };
+            err = new Proxy(err, message);
+            _.set(err, 'response.type', 'application/problem+json');
+        }
+        else {
+            const detail = err.response.text;
+            const title = 'DEPRECATED old format response';
+            const message = {
 
-}
+                get: function(t, n) {
+                    if (n === 'message') {
+                        if (__DEBUG__) {
+                            console.warn("The api call response is old format. That is DEPRECATED and should be updated.");
+                        }
+                        return title+"\n"+detail;
+                    }
+                    else {
+                        return t[n];
+                    }
+                }
+            };
+            err = new Proxy(err, message);
+            err.title = title;
+            err.detail = detail;
+            err.statusCode = _.get(err, 'response.statusCode', undefined);
+            _.set(err, 'response.type', 'application/problem+json');
+        }
+    }
 
     callback(err, res);
 }
