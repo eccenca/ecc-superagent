@@ -1,1 +1,1 @@
-"Pragma: no-cache\r\nContent-Type: application/json\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nLink: <https://sscpoc-ericsson.eccenca.com/dataplatform/pubsub/hub/default>;rel=\"hub\", <https://sscpoc-ericsson.eccenca.com/data/mdm/>;rel=\"self\"\r\nExpires: 0\r\n"
+"Pragma: no-cache\r\nContent-Type: application/json\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nLink: <https://example.org/pubsub/hub/default>;rel=\"hub\", <https://example.org/data/>;rel=\"self\"\r\nExpires: 0\r\n"

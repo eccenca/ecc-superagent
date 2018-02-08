@@ -1,14 +1,18 @@
 /* global describe, it */
 
 // imports
-import should from 'ecc-test-helpers';
+import should from 'should';
+
+global.__DEBUG__ = true;
 
 // nock
 import nock from 'nock';
 
 // import module
 import request from '../index.js';
-import _ from 'lodash';
+
+// Each Test file needs a unique url
+const uri = 'http://test.com';
 
 // main test suite
 describe('SuperAgent', () => {
@@ -18,34 +22,31 @@ describe('SuperAgent', () => {
     });
 
     describe('should get requests', () => {
+        nock(uri)
+            .get('/')
+            .twice()
+            .reply(200, 'OK');
 
-        nock('http://test.com').get('/').twice().reply(200, 'OK');
-
-
-        it('should get page as an observable', (done) => {
+        it('should get page as an observable', done => {
             request
-                .get('http://test.com')
+                .get(uri)
                 .observe() // this returns Rx.Observable
-                .subscribe(function(res) {
+                .subscribe(res => {
                     should(res.text).equal('OK');
                     done();
                 });
         });
 
-        it('should get page with .end()', (done) => {
-            request
-                .get('http://test.com')
-                .end(function(err, res) {
-                    should(err).equal(null);
-                    should(res.text).equal('OK');
-                    done();
-                });
+        it('should get page with .end()', done => {
+            request.get(uri).end((err, res) => {
+                should(err).equal(null);
+                should(res.text).equal('OK');
+                done();
+            });
         });
-
     });
 
     describe('Global Plugin Extension', () => {
-
         it('should exist', () => {
             // check object
             should.exist(request.useForEachRequest);
@@ -54,44 +55,44 @@ describe('SuperAgent', () => {
         it('should register a global plugin', () => {
             // check object
             request.useForEachRequest('testPlugin', request => {
-                request.url = 'http://test2.com';
+                request.url = uri;
                 return request;
             });
         });
 
-        it('should apply a global plugin', (done) => {
-
-            nock('http://test2.com').get('/').reply(200, 'OK');
-            nock('http://foobar.com').get('/').reply(403, 'NOPE');
+        it('should apply a global plugin', done => {
+            nock(uri)
+                .get('/')
+                .reply(200, 'OK');
+            nock('http://foobar.com')
+                .get('/')
+                .reply(403, 'NOPE');
 
             request
                 .get('http://foobar.com')
                 .observe() // this returns Rx.Observable
-                .subscribe(function(res) {
+                .subscribe(res => {
                     should(res.text).equal('OK');
                     done();
                 });
-
         });
 
         it('should unregister a global plugin', () => {
             request.useForEachRequest('testPlugin', false);
         });
 
-        it('should do not apply a unregistered plugin', (done) => {
-
-            nock('http://test3.com').get('/').reply(200, 'OK');
+        it('should do not apply a unregistered plugin', done => {
+            nock('http://test3.com')
+                .get('/')
+                .reply(200, 'OK');
 
             request
                 .get('http://test3.com')
                 .observe() // this returns Rx.Observable
-                .subscribe(function(res) {
+                .subscribe(res => {
                     should(res.text).equal('OK');
                     done();
                 });
-
         });
-
     });
-
 });

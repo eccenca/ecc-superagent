@@ -1,28 +1,25 @@
 const _ = require('lodash');
 
-
 function getRawHeaders(string) {
-    var lines = string.split(/\r?\n/);
+    const lines = string.split(/\r?\n/);
 
-    var res = [];
+    const res = [];
 
-    for (var i = 0, len = lines.length; i < len; ++i) {
-        var line = lines[i];
+    for (let i = 0, len = lines.length; i < len; ++i) {
+        const line = lines[i];
 
         if (!_.isEmpty(line)) {
-            var index = line.indexOf(':');
+            const index = line.indexOf(':');
 
-            var field = line.slice(0, index);
-            var val = _.trim(line.slice(index + 1));
+            const field = line.slice(0, index);
+            const val = _.trim(line.slice(index + 1));
 
             res.push(field);
             res.push(val);
         }
-
     }
 
     return res;
-
 }
 
 module.exports = getRawHeaders;
