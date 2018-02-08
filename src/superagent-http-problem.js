@@ -5,10 +5,8 @@ const DEPRECATION_WARNING = `@eccenca/superagent: You used .message of to access
 You should use the more detailed .title and .detail .`;
 
 function httpProblemHandler(callback, err, res) {
-
     // Adapt new errors (problem+json) to the old format and inform the user about deprecation.
     if (err) {
-
         let detail = err.message;
         let title = 'An Error occurred';
 
@@ -16,13 +14,10 @@ function httpProblemHandler(callback, err, res) {
 
         // Yay, we got a nice HTTP Problem error here
         if (_.get(err, 'response.type') === 'application/problem+json') {
-
             title = _.get(err, 'response.body.title', title);
             detail = _.get(err, 'response.body.detail', detail);
-        }
-        //We try to fit all non-http errors in the HTTP error scheme
-        else {
-
+        } else {
+            // We try to fit all non-http errors in the HTTP error scheme
             const responseText = _.get(err, 'response.text', '');
             const responseMessage = _.get(err, 'response.body.message', '');
 
@@ -30,20 +25,16 @@ function httpProblemHandler(callback, err, res) {
             // Handle Superagent Timeout Errors
             if (err.code === 'ECONNABORTED') {
                 title = 'A timeout error occurred';
-            }
-            // Handle HTTP Errors which have a body formed {message: '...'}
-            else if (!_.isEmpty(responseMessage)) {
+            } else if (!_.isEmpty(responseMessage)) {
+                // Handle HTTP Errors which have a body formed {message: '...'}
                 detail = responseMessage;
-            }
-            // Handle plain HTTP text errors
-            else if (!_.isEmpty(responseText)) {
+            } else if (!_.isEmpty(responseText)) {
+                // Handle plain HTTP text errors
                 detail = responseText;
+            } else if (_.isNumber(err.statusCode)) {
+                // Handle empty HTTP Errors with status code
+                detail = `HTTP Error: ${detail}`;
             }
-            // Handle empty HTTP Errors with status code
-            else if (_.isNumber(err.statusCode)) {
-                detail = 'HTTP Error: ' + detail;
-            }
-
         }
 
         err.title = title;
@@ -53,24 +44,21 @@ function httpProblemHandler(callback, err, res) {
         _.set(err, 'response.type', 'application/problem+json');
 
         err = new Proxy(err, {
-            get: function(t, n) {
+            get(t, n) {
                 if (n === 'message') {
                     warning(!__DEBUG__, DEPRECATION_WARNING);
-                    return t.title + '\n' + t.detail;
+                    return `${t.title}\n${t.detail}`;
                 }
-                else {
-                    return t[n];
-                }
-            }
-        });
 
+                return t[n];
+            },
+        });
     }
 
     callback(err, res);
 }
 
 module.exports = function(superagent) {
-
     const oldEnd = superagent.Request.prototype.end;
 
     superagent.Request.prototype.end = function(callback) {

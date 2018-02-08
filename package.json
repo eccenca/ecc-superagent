@@ -10,7 +10,10 @@
     "cover": "gulp cover",
     "init": "ecc-link-dotfiles",
     "build": "gulp",
-    "prepare": "npm run init && npm run build"
+    "prepare": "npm run init && npm run build && npm run docs",
+    "docs": "gulp docs",
+    "precommit": "lint-staged",
+    "lint": "eslint --ignore-path .gitignore '**/*.{js,jsx}' --fix"
   },
   "repository": {
     "type": "git",
@@ -35,5 +38,8 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint"
   }
 }
