@@ -1,4 +1,4 @@
-var Rx = require('rx');
+var Rx = require('rxjs/Rx');
 
 module.exports = function(superagent) {
     superagent.Request.prototype.observe = function() {
@@ -10,11 +10,11 @@ module.exports = function(superagent) {
 
                     err.response = res;
 
-                    observable.onError(err);
+                    observable.error(err);
                 } else {
-                    observable.onNext(res);
+                    observable.next(res);
                 }
-                observable.onCompleted();
+                observable.complete();
             });
         });
     };
