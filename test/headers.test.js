@@ -1,6 +1,7 @@
 /* global describe, it */
 // imports
-import should from 'ecc-test-helpers';
+import should from 'should';
+global.__DEBUG__ = true;
 
 // nock
 import nock from 'nock';
@@ -16,15 +17,18 @@ import path from 'path';
 import globby from 'globby';
 import _ from 'lodash';
 
+// Each Test file needs a unique url
+const uri = 'http://test-headers.com';
+
 describe('Headers Fix', () => {
     it('should add rawHeaders', (done) => {
 
-        nock('http://testheaders.com').get('/').reply(200, 'OK',
+        nock(uri).get('/').reply(200, 'OK',
             {'X-HEADER': 'value'}
         );
 
         request
-            .get('http://testheaders.com')
+            .get(uri)
             .observe() // this returns Rx.Observable
             .subscribe(function(res) {
 
@@ -39,12 +43,12 @@ describe('Headers Fix', () => {
 
     it('should parse rawHeaders', (done) => {
 
-        nock('http://testheaders.com').get('/').reply(200, 'OK',
+        nock(uri).get('/').reply(200, 'OK',
             {'X-HEADER': 'value'}
         );
 
         request
-            .get('http://testheaders.com')
+            .get(uri)
             .observe() // this returns Rx.Observable
             .subscribe(function(res) {
                 should(res.headers).eql({

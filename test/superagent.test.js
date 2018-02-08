@@ -1,14 +1,17 @@
 /* global describe, it */
 
 // imports
-import should from 'ecc-test-helpers';
+import should from 'should';
+global.__DEBUG__ = true;
 
 // nock
 import nock from 'nock';
 
 // import module
 import request from '../index.js';
-import _ from 'lodash';
+
+// Each Test file needs a unique url
+const uri = 'http://test.com';
 
 // main test suite
 describe('SuperAgent', () => {
@@ -19,12 +22,12 @@ describe('SuperAgent', () => {
 
     describe('should get requests', () => {
 
-        nock('http://test.com').get('/').twice().reply(200, 'OK');
+        nock(uri).get('/').twice().reply(200, 'OK');
 
 
         it('should get page as an observable', (done) => {
             request
-                .get('http://test.com')
+                .get(uri)
                 .observe() // this returns Rx.Observable
                 .subscribe(function(res) {
                     should(res.text).equal('OK');
@@ -34,7 +37,7 @@ describe('SuperAgent', () => {
 
         it('should get page with .end()', (done) => {
             request
-                .get('http://test.com')
+                .get(uri)
                 .end(function(err, res) {
                     should(err).equal(null);
                     should(res.text).equal('OK');
@@ -54,14 +57,14 @@ describe('SuperAgent', () => {
         it('should register a global plugin', () => {
             // check object
             request.useForEachRequest('testPlugin', request => {
-                request.url = 'http://test2.com';
+                request.url = uri;
                 return request;
             });
         });
 
         it('should apply a global plugin', (done) => {
 
-            nock('http://test2.com').get('/').reply(200, 'OK');
+            nock(uri).get('/').reply(200, 'OK');
             nock('http://foobar.com').get('/').reply(403, 'NOPE');
 
             request

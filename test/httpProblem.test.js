@@ -1,6 +1,7 @@
 /* global describe, it */
 // imports
-import should from 'ecc-test-helpers';
+import should from 'should';
+global.__DEBUG__ = true;
 
 // nock
 import nock from 'nock';
@@ -10,15 +11,18 @@ import request from '../index.js';
 
 import _ from 'lodash';
 
+// Each Test file needs a unique url
+const uri = 'http://test-problems.com';
+
 describe('httpProblem', () => {
 
     describe('should get requests with errors correctly', () => {
 
-        nock('http://test.com').get('/').twice().reply(415, 'FAIL');
+        nock(uri).get('/').twice().reply(415, 'FAIL');
 
         it('should get page as an observable', (done) => {
             request
-                .get('http://test.com')
+                .get(uri)
                 .observe() // this returns Rx.Observable
                 .subscribe(_.noop, function(err){
 
@@ -32,7 +36,7 @@ describe('httpProblem', () => {
 
         it('should get page with .end()', (done) => {
             request
-                .get('http://test.com')
+                .get(uri)
                 .end(function(err, res) {
                     should(err).is.a.Error();
                     should(err.isHTTPProblem).equal(true);
@@ -48,12 +52,12 @@ describe('httpProblem', () => {
 
         it('on timeout error', (done) => {
 
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .delayConnection(2000)
-                .reply(200, '');
+                .reply(200, 'a');
 
-            request.get('http://test.com')
+            request.get(uri)
                 .timeout({
                     response: 20,
                     deadline: 20,
@@ -72,7 +76,7 @@ describe('httpProblem', () => {
 
             const errorcode = _.random(400, 410);
 
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .reply(
                     errorcode,
@@ -81,7 +85,7 @@ describe('httpProblem', () => {
                 );
 
 
-            request.get('http://test.com')
+            request.get(uri)
                 .end(function(err, res) {
                     should(err).is.a.Error();
                     should(err.statusCode).equal(errorcode);
@@ -97,7 +101,7 @@ describe('httpProblem', () => {
 
             const errorcode = _.random(500, 520);
 
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .reply(
                     errorcode,
@@ -106,7 +110,7 @@ describe('httpProblem', () => {
                 );
 
 
-            request.get('http://test.com')
+            request.get(uri)
                 .end(function(err, res) {
 
                     should(err).is.a.Error();
@@ -125,7 +129,7 @@ describe('httpProblem', () => {
             const message = 'Such a test message';
 
             const errorcode = _.random(400, 410);
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .reply(
                     errorcode,
@@ -134,7 +138,7 @@ describe('httpProblem', () => {
                 );
 
 
-            request.get('http://test.com')
+            request.get(uri)
                 .end(function(err, res) {
 
                     should(err).is.a.Error();
@@ -151,7 +155,7 @@ describe('httpProblem', () => {
         it('on plain text errors', (done) => {
 
             const errorcode = _.random(400, 410);
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .reply(
                     errorcode,
@@ -159,7 +163,7 @@ describe('httpProblem', () => {
                 );
 
 
-            request.get('http://test.com')
+            request.get(uri)
                 .end(function(err, res) {
 
                     should(err).is.a.Error();
@@ -175,7 +179,7 @@ describe('httpProblem', () => {
 
         it('on empty errors', (done) => {
 
-            nock('http://test.com')
+            nock(uri)
                 .get('/')
                 .reply(
                     404,
@@ -183,7 +187,7 @@ describe('httpProblem', () => {
                 );
 
 
-            request.get('http://test.com')
+            request.get(uri)
                 .end(function(err, res) {
 
                     should(err).is.a.Error();
