@@ -5,7 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-TODO: add at least one Added, Changed, Deprecated, Removed, Fixed or Security section
+### Changed
+- Migrated from `rx@4` to `rxjs@5`
+- Updated dependencies
 
 ## [1.3.0] 2017-09-27
 
