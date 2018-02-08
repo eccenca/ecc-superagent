@@ -1,26 +1,25 @@
 import _ from 'lodash';
 
-//import array of all superagent http methods
+// import array of all superagent http methods
 import methods from 'methods';
 
 // Instead of delete superagent uses del, so we need to add it
 methods.indexOf('del') == -1 && methods.push('del');
 
-const superagentGlobalPlugin = (superagent => {
-
+const superagentGlobalPlugin = superagent => {
     // This is a map of global superagent plugins
     const globalPlugins = {};
 
     /**
      *
      * Adds a plugin to each request if fn is a function, deletes it otherwise
-     * 
+     *
      * @param {String} key
      * @param {Function|*} fn
      * @returns {superagent}
      */
     superagent.useForEachRequest = function(key, fn) {
-        // 
+        //
         if (_.isFunction(fn)) {
             globalPlugins[key] = fn;
         } else {
@@ -30,20 +29,17 @@ const superagentGlobalPlugin = (superagent => {
     };
 
     // Apply method for each superagent method like .get and .post
-    methods.forEach(function(method) {
-
-        var oldMethod = superagent[method];
+    methods.forEach(method => {
+        const oldMethod = superagent[method];
 
         superagent[method] = function() {
-            var request = oldMethod.apply(superagent, arguments);
-            _.forEach(globalPlugins, function(plugin) {
+            let request = oldMethod.apply(superagent, arguments);
+            _.forEach(globalPlugins, plugin => {
                 request = request.use(plugin);
             });
             return request;
         };
     });
-
-});
-
+};
 
 export default superagentGlobalPlugin;
