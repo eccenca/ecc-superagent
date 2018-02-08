@@ -1,6 +1,6 @@
 {
   "name": "@eccenca/superagent",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Extended version of superagent.js, pimped with RX, better Link header parsing and HTTP Problem support",
   "main": "es5/component.js",
   "es5": "es5/component.js",
