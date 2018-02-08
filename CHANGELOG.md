@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Migrated from `rx@4` to `rxjs@5`
 - Updated dependencies
 
+## [1.4.0] 2018-01-23
+
+### Changed
+- open source component
+
 ## [1.3.0] 2017-09-27
 
 ### Changed
