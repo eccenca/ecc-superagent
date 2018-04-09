@@ -43,16 +43,16 @@ function httpProblemHandler(callback, err, res) {
 
         _.set(err, 'response.type', 'application/problem+json');
 
-        err = new Proxy(err, {
-            get(t, n) {
-                if (n === 'message') {
-                    warning(!__DEBUG__, DEPRECATION_WARNING);
-                    return `${t.title}\n${t.detail}`;
-                }
+        // err = new Proxy(err, {
+        //     get(t, n) {
+        //         if (n === 'message') {
+        //             warning(!__DEBUG__, DEPRECATION_WARNING);
+        //             return `${t.title}\n${t.detail}`;
+        //         }
 
-                return t[n];
-            },
-        });
+        //         return t[n];
+        //     },
+        // });
     }
 
     callback(err, res);
