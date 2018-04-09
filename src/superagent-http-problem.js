@@ -39,6 +39,7 @@ function httpProblemHandler(callback, err, res) {
 
         _.set(err, 'response.type', 'application/problem+json');
 
+        err.message = `${title}\n${detail}`
     }
 
     callback(err, res);
