@@ -1,8 +1,4 @@
 import _ from 'lodash';
-import warning from 'warning';
-
-const DEPRECATION_WARNING = `@eccenca/superagent: You used .message of to access Error details.
-You should use the more detailed .title and .detail .`;
 
 function httpProblemHandler(callback, err, res) {
     // Adapt new errors (problem+json) to the old format and inform the user about deprecation.
@@ -43,16 +39,6 @@ function httpProblemHandler(callback, err, res) {
 
         _.set(err, 'response.type', 'application/problem+json');
 
-        // err = new Proxy(err, {
-        //     get(t, n) {
-        //         if (n === 'message') {
-        //             warning(!__DEBUG__, DEPRECATION_WARNING);
-        //             return `${t.title}\n${t.detail}`;
-        //         }
-
-        //         return t[n];
-        //     },
-        // });
     }
 
     callback(err, res);
